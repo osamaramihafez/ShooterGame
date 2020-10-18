@@ -1,0 +1,166 @@
+/* 
+ * What about serving up static content, kind of like apache? 
+ * This time, you are required to present a user and password to the login route
+ * before you can read any static content.
+ */
+
+var port = 10039; // REPLACE THIS WITH YOUR PORT
+
+var express = require('express');
+var cookieParser = require('cookie-parser');
+
+const sqlite3 = require('sqlite3').verbose();
+var bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true })); 
+
+var db = new sqlite3.Database('db/database.db', (err) => {
+	if (err) {
+			console.error(err.message);
+	}
+	console.log('Connected to the database.');
+});
+
+
+var app = express();
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
+
+// ----------------------------------------------------------------------------------
+// BEGIN: To restrict access to / 
+// ----------------------------------------------------------------------------------
+// var user="arnold", password="password"; // REPLACE THESE TO KEEP OTHERS OUT OF YOUR APPLICATION
+// var id = Math.random().toString(36).substring(2, 15) + 
+// 	Math.random().toString(36).substring(2, 15);
+
+
+
+//Search for a user (Login?)
+app.get('/ftd/api/user/:username/password/:password',function(req,res){
+	var username = req.params.username;
+	var password = req.params.password;
+	let sql = 'SELECT username, password FROM Users WHERE username=? and password=?;';
+	db.get(sql, [username,password], (err, row) => {
+		var result = {};
+		if(err){
+			result['error'] = err.message;
+		}else{
+			try{
+				result['username'] = row.username;
+				if (password == row.password){
+					result['success'] = true;
+				} else{
+					result['success'] = false;
+				}
+				result["showError"] = false;
+			}catch(TypeError){
+				console.log("Username doesn't exist");
+				result["showError"] = true;
+			}
+		}
+		// console.log("asjhdbahjsd");
+		console.log(result);
+		res.json(result);
+	});
+});
+
+
+//Add a user
+app.post('/ftd/api/users', function(req,res){
+	var username = req.body.username;
+	var password = req.body.password;
+	var email = req.body.email;
+	var gamesplayed = req.body.games;
+	console.log(username);
+	let sql = "INSERT INTO Users(username,password,email,numGamesPlayed) VALUES(?,?,?,?);";
+	db.run(sql, [username,password,email,gamesplayed], function (err){
+		var result = {};
+		if(err){
+			//res.status(409);
+			result['error'] = err.message;
+			result['showError'] = true;
+		}else{
+			result['showError'] = false;
+			result['success'] = "account created";
+		}
+		res.json(result);
+	});
+});
+
+
+//Update a user
+app.put('/ftd/api/users', function(req,res){
+	var username = req.body.username;
+	var password = req.body.password;
+	var email = req.body.email;
+	let sql = "UPDATE Users SET password=? email=? WHERE username=?;";
+	db.run(sql, [password,email,username], function (err){
+		var result = {};
+		if(err){
+			result['error'] = err.message;
+		}else{
+			result['sucess'] = "account updated";
+		}
+		res.json(result);
+	});
+});
+
+app.delete('/ftd/api/users', function(req,res){
+	var username = req.body.username;
+	var password = req.body.password;
+	let sql = "DELETE FROM Users WHERE username=? and password=?;";
+	db.run(sql, [username,password], function (err){
+		var result = {};
+		if(err){
+			result['error'] = err.message;
+		}else{
+			result['success'] = "account delete";
+		}
+		res.json(result);
+	});
+});
+
+app.get('/ftd/api/highscores',function(req,res){
+	let sql = 'SELECT * FROM Highscore ORDER BY score DESC;';
+	db.all(sql, [], (err, rows) => {
+		var result = {users:[]};
+		if(err){
+			result['error'] = err.message;
+		}else{
+			console.log(rows);
+			rows.forEach((row) => {
+				result.users.push({
+					username: row.username,
+					score: row.score});
+			  });
+		}
+		console.log(result);
+		res.json(result);
+	});
+});
+
+app.post('/ftd/api/highscores/',function(req,res){
+	var username = req.body.username;
+	var score = req.body.score;
+	let sql = 'INSERT INTO Highscore(username, score) VALUES(?, ?)';
+	db.run(sql, [username,score], function (err){
+		var result = {};
+		if(err){
+			result['error'] = err.message;
+		}else{
+			result['success'] = "score added";
+		}
+		res.json(result);
+	});
+});
+
+// ----------------------------------------------------------------------------------
+// END: To restrict access to /
+// ----------------------------------------------------------------------------------
+
+app.use('/',express.static('static_files')); // this directory has files to be returned
+
+app.listen(port, function () {
+  console.log('Example app listening on port '+port);
+});

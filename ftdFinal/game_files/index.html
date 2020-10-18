@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta HTTP-EQUIV="EXPIRES" CONTENT="-1">
+		<meta name="viewport" content="height=device-height; width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no">
+		<title>FTD</title>
+
+		<script src="/lib/jquery-3.3.1.min.js"></script>
+		<script language="javascript" src="model.js" > </script>		
+		<script language="javascript" src="controller.js"> </script>
+		
+		<script language="javascript" src="map.js" > </script>
+		
+		
+		<style>
+			body,canvas{
+				padding: 0;
+				position: relative;
+				margin: 0;
+				
+			}
+			.container{
+				position: relative;
+				
+			}
+			#gameOver{
+				padding: 10%;
+				margin: 10%;
+				background-color: rgba(0,0,0,1);
+				color: white;
+				font-size: large;
+			}
+			
+			
+			img{
+				min-width: 45px;
+				max-width: 45px;
+				padding: 0;
+				margin: 0;
+				border: solid;
+				display: block;
+			}
+			.weapon_info{
+				width: 200px;
+				padding: 0;
+				margin: 0;
+				float: right;
+				border: solid;
+			}
+			#main { 
+				width: 800px;
+				margin: 0 auto;
+			}
+			#inv {
+				width: 600px;
+				height: 100px;
+				display: grid;
+				grid-template-columns: repeat(7, 50px);
+				grid-template-rows: repeat(1, 50px);
+				border: solid;
+				float: left;
+			}
+			#page-wrap  {
+				width: 200px;
+				border: solid;
+				height: 100px;
+				margin-left: 600px;
+			}
+			#ui_login{
+				margin:10%;
+				padding: 5%;
+				background: rgba(0,0,0,1);
+				color:white;
+			}
+			#ui_registration{
+				margin: 10%;
+				padding: 5%;
+				background: rgba(0,0,0,1);
+				color: white;
+			}
+			#highscores, #gameOverHighscores{
+				color:white;
+				background: rgba(0,0,100,1);
+				border: green solid;
+				border-radius: 10px;
+				border-radius: 10px;
+			}
+			li{
+				color:white;
+				list-style: none;
+				/* border-bottom: white solid; */
+			}
+			button{
+				border-radius: 10px;
+				border: green solid 2px;
+				color: white;
+				background: rgba(0,0,100,1);;
+			}
+			#Error{
+				max-width: 50%;
+			}
+		</style>
+	</head>
+	<center>
+	<!-- <body bgcolor=ffffff onload="setupGame(); startGame();"> -->
+	<body bgcolor=ffffff id="body"> 
+		<div id='ui_game'>
+			
+			<canvas id="stage" width="800" height="600" style="border:1px solid black"> </canvas>
+			
+		</div>
+		<div id="gameOver">
+			GAME OVER <br> <br>
+			<button id="Restart">restart</button>
+			<br>
+			<br>
+			<div id='gameOverHighscores'>
+		</div>
+	</div>
+
+		
+		
+	</body>
+
+	
+	</center>
+
+	
+</html>
+

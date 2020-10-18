@@ -1,0 +1,36 @@
+feature 1: obstacles can be destroyed
+	-rocks and trees destroyed
+
+feature 2: obstacles to hide under
+	- player and npcs can go under trees to protect from guns
+
+feature 3: npcs drop ammunition
+
+feature 4: player lives
+	- player starts with one life (can get more) 
+	- player lives on display
+
+feature 5: health/life packs
+	- player can pick up health packs to gain extra lifes
+
+ feature 6: house
+	- player and npcs can go in a house at entrances (bullets cant go through walls)
+	- sprite changes when player go inside
+
+feature 7: friendly fire
+	-npcs can harm other npcs if bullets hit them
+
+feature 8: player picks up multiple weapons
+	-can pick up multiple guns and store them in an inventory (limit)
+
+features 9: Inventory display
+	- play can navigate through guns the player has picked ( with keys 1 through 7 )
+	- sprite changes when player holds a gun 
+	- inventory highlights current slot 
+
+feature 10: highscore when game over
+	- when the game is over canvas is hidden, the score is uploaded and new high score is displayed 
+
+feature 11: restart
+	- when player loses game, button option is displayed to restart game on click
+	

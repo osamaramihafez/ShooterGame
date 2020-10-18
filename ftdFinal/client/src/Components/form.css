@@ -1,0 +1,10 @@
+.form{
+    margin: 6%;
+    padding: 5%;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    border-radius: 100px;
+}
+#Error{
+    max-width: 50%;
+}
